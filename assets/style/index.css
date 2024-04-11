@@ -3,3 +3,18 @@
 body {
   background-color: #18171f;
 }
+
+main {
+  height: 100svh;
+  min-width: 100%;
+}
+
+.map {
+  height: 100%;
+  width: 100%;
+}
+
+.mapboxgl-ctrl-bottom-left,
+.mapboxgl-ctrl-bottom-right {
+  display: none !important;
+}
