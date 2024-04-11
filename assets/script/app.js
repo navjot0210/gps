@@ -6,37 +6,40 @@ const options = {
   enableHighAccuracy: true
 };
 
-function setupMap(center, longitude, latitude) {
-  const map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v11',
-    center: center,
-    zoom: 15
-  });
+const marker1 = new mapboxgl.Marker({color: '#ff7342'});
 
-  const nav = new mapboxgl.NavigationControl();
-  map.addControl(nav);
-
-  const marker1 = new mapboxgl.Marker({color: '#ff7342'})
-  .setLngLat([longitude, latitude])
-  .addTo(map);
-}
+const map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/streets-v11',
+  center: [0, 0],
+  zoom: 15,
+  pitch: 40
+});
 
 function getLocation(position) {
   let { latitude, longitude } = position.coords;
-
-  setupMap([longitude, latitude], longitude, latitude);
+  map.setCenter([longitude, latitude]);     //
+  marker1.setLngLat([longitude, latitude]).addTo(map);
 }
 
 function errorHandler() {
   return 'Unable to retrieve your location';
 }
 
+function disabledOptions() {
+  map.dragPan.disable();
+  map.keyboard.disable();
+  map.scrollZoom.disable();
+  map.doubleClickZoom.disable();
+  map.touchZoomRotate.disable();
+}
+
 function displayPosition() {
   if('geolocation' in navigator) {
-      navigator.geolocation.watchPosition(getLocation, errorHandler, options);
+    navigator.geolocation.watchPosition(getLocation, errorHandler, options);
+    disabledOptions();
   } else {
-      console.log('Geolocation is not supported by your browser');
+    console.log('Geolocation is not supported by your browser');
   }
 }
 
